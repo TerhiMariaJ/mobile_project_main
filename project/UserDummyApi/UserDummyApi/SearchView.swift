@@ -40,7 +40,7 @@ struct SearchView: View{
             if let found = found{
                 List{
                     ForEach(found, id: \.id){ user in
-                        Text("\(user.id). \(user.firstName) \(user.lastName), \(user.username)")
+                        Text("\(user.id). \(user.firstName) \(user.lastName)")
                         
                     }
                 }
@@ -49,7 +49,9 @@ struct SearchView: View{
             }
             Spacer()
             }
+            .padding()
         
         }
+        
     }
 

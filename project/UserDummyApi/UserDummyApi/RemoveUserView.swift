@@ -28,7 +28,7 @@ struct RemoveUserView: View {
                         .responseDecodable(of: Users.self){
                             response in
                             if let result = response.value{
-                                self.deleteMessage = "Removed: \(result.firstName) \(result.lastName), \(result.username)"
+                                self.deleteMessage = "Removed: \(result.firstName) \(result.lastName)"
                             } else {
                                 self.deleteMessage = "User ID not found"
                             }
@@ -50,10 +50,7 @@ struct RemoveUserView: View {
             Spacer()
             
         }
-        .onAppear(){
-
-            
-        }
+        .padding()
         
     }
     }

@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		606E045E2A1212C600046548 /* AddUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606E045D2A1212C600046548 /* AddUserView.swift */; };
 		60AEF6B32A0A24990026992B /* UserDummyApiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AEF6B22A0A24990026992B /* UserDummyApiApp.swift */; };
 		60AEF6B52A0A24990026992B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AEF6B42A0A24990026992B /* ContentView.swift */; };
 		60AEF6B72A0A249A0026992B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60AEF6B62A0A249A0026992B /* Assets.xcassets */; };
 		60AEF6BA2A0A249A0026992B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60AEF6B92A0A249A0026992B /* Preview Assets.xcassets */; };
 		60AEF6C12A0A25F20026992B /* ImageOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AEF6C02A0A25F20026992B /* ImageOverlay.swift */; };
 		60AEF6C32A0A29880026992B /* Users.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AEF6C22A0A29880026992B /* Users.swift */; };
-		60AEF6C52A0A2A6D0026992B /* AllUsersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AEF6C42A0A2A6D0026992B /* AllUsersView.swift */; };
 		60AEF6C72A0A2C2F0026992B /* FetchUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AEF6C62A0A2C2F0026992B /* FetchUsers.swift */; };
 		60AEF6D02A0A2E4A0026992B /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 60AEF6CF2A0A2E4A0026992B /* Alamofire */; };
 		60AEF6D22A0A46990026992B /* RemoveUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AEF6D12A0A46990026992B /* RemoveUserView.swift */; };
@@ -21,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		606E045D2A1212C600046548 /* AddUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUserView.swift; sourceTree = "<group>"; };
 		60AEF6AF2A0A24990026992B /* UserDummyApi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UserDummyApi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		60AEF6B22A0A24990026992B /* UserDummyApiApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDummyApiApp.swift; sourceTree = "<group>"; };
 		60AEF6B42A0A24990026992B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -28,7 +29,6 @@
 		60AEF6B92A0A249A0026992B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		60AEF6C02A0A25F20026992B /* ImageOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageOverlay.swift; sourceTree = "<group>"; };
 		60AEF6C22A0A29880026992B /* Users.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Users.swift; sourceTree = "<group>"; };
-		60AEF6C42A0A2A6D0026992B /* AllUsersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllUsersView.swift; sourceTree = "<group>"; };
 		60AEF6C62A0A2C2F0026992B /* FetchUsers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchUsers.swift; sourceTree = "<group>"; };
 		60AEF6D12A0A46990026992B /* RemoveUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveUserView.swift; sourceTree = "<group>"; };
 		60AEF6D32A0A512A0026992B /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
@@ -66,11 +66,11 @@
 			isa = PBXGroup;
 			children = (
 				60AEF6B22A0A24990026992B /* UserDummyApiApp.swift */,
+				606E045D2A1212C600046548 /* AddUserView.swift */,
 				60AEF6C62A0A2C2F0026992B /* FetchUsers.swift */,
 				60AEF6D12A0A46990026992B /* RemoveUserView.swift */,
 				60AEF6D32A0A512A0026992B /* SearchView.swift */,
 				60AEF6C22A0A29880026992B /* Users.swift */,
-				60AEF6C42A0A2A6D0026992B /* AllUsersView.swift */,
 				60AEF6C02A0A25F20026992B /* ImageOverlay.swift */,
 				60AEF6B42A0A24990026992B /* ContentView.swift */,
 				60AEF6B62A0A249A0026992B /* Assets.xcassets */,
@@ -168,9 +168,9 @@
 				60AEF6D22A0A46990026992B /* RemoveUserView.swift in Sources */,
 				60AEF6C12A0A25F20026992B /* ImageOverlay.swift in Sources */,
 				60AEF6D42A0A512A0026992B /* SearchView.swift in Sources */,
-				60AEF6C52A0A2A6D0026992B /* AllUsersView.swift in Sources */,
 				60AEF6B32A0A24990026992B /* UserDummyApiApp.swift in Sources */,
 				60AEF6C72A0A2C2F0026992B /* FetchUsers.swift in Sources */,
+				606E045E2A1212C600046548 /* AddUserView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
