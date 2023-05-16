@@ -9,15 +9,30 @@ import SwiftUI
 import Alamofire
 
 struct ContentView: View {
+        
     @State var firstN: String = ""
     @State var lastN: String = ""
+    @State var search: String = ""
+    @State var found: Array<Users>?
     @State var 🧑‍🌾: Bool = false
-    @State var newUser: Users?
+    @State var 🙋: Bool = false
     @ObservedObject var fetchUsers = FetchUsers.shared
     
 
     func removeUser(at offsets: IndexSet){
         fetchUsers.fetched?.remove(atOffsets: offsets)
+    }
+    
+    func searchUser(){
+        🙋.toggle()
+        AF.request("https://dummyjson.com/users/search?q=\(search)")
+            .responseDecodable(of: Results.self){
+                response in
+                if let results = response.value{
+                    self.found = results.users
+                    
+                }
+            }
     }
     
     func addUser(){
@@ -33,9 +48,15 @@ struct ContentView: View {
             .responseDecodable(of: Users.self){
                 response in
                 if let results = response.value{
-                    self.newUser = results
-                    fetchUsers.fetched?.append(newUser!)
+                    let newUser = results
                     
+                    fetchUsers.fetched?.append(newUser)
+                        
+                    
+                    
+                    firstN = ""
+                    lastN = ""
+                                        
                     
                 }
                 
@@ -44,7 +65,7 @@ struct ContentView: View {
     }
     
     var body: some View {
-        TabView{
+        
             VStack {
                 HStack{
                     Text("Users")
@@ -64,17 +85,46 @@ struct ContentView: View {
                         Text("Add a new user")
                     }
                 }
-                Spacer()
-                if let fetched = fetchUsers.fetched{
-                    List{
-                        ForEach(fetched, id: \.id){ user in
-                            Text("\(user.id). \(user.firstName) \(user.lastName)")
+                .padding()
+                
+                HStack{
+                    TextField("Who do you want to find?", text: $search)
+                    Button(action: {
+                        searchUser()
+                        
+                    }) {
+                        Image(systemName: "magnifyingglass")
+                    }
+                }
+                .padding()
+                if(🙋 == false){
+                    if let fetched = fetchUsers.fetched{
+                        List{
+                            ForEach(fetched, id: \.id){ user in
+                                Text("\(user.id). \(user.firstName) \(user.lastName)")
+                                
+                            }
+                            .onDelete(perform: removeUser)
                             
                         }
-                        .onDelete(perform: removeUser)
                         
                     }
-                    
+                } else {
+                    if let found = found{
+                        List{
+                            ForEach(found, id: \.id) { found in
+                                Text("\(found.id). \(found.firstName) \(found.lastName)")
+                            }
+                        }
+                        Button(action: {
+                            🙋 = false
+                            search = ""
+                        }) {
+                            Text("Clear search")
+                        }
+                        .padding()
+                        
+                    }
                 }
                 
             }
@@ -84,20 +134,7 @@ struct ContentView: View {
                 fetchUsers.fetchAllUsers()
                 
             }
-            .tabItem{
-                Text("Home")
-            }
-            SearchView()
-                .tabItem{
-                    
-                    Text("Search")
-                }
-            
-            
-            
-        }
-        
-            
+           
         
     }
 }
