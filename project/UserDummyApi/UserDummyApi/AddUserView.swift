@@ -56,7 +56,7 @@ struct AddUserView: View{
             }
             if let newUser = newUser{
                 Text("This was added:")
-                Text("ID: \(newUser.id)")
+            
                 Text("Name: \(newUser.firstName) \(newUser.lastName)")
                 
                

@@ -13,16 +13,53 @@ struct ContentView: View {
     @State var firstN: String = ""
     @State var lastN: String = ""
     @State var search: String = ""
+    @State var newFirstN: String = ""
+    @State var newLastN: String = ""
     @State var found: Array<Users>?
     @State var 🧑‍🌾: Bool = false
     @State var 🙋: Bool = false
+    @State var 👽: Bool = false
     @ObservedObject var fetchUsers = FetchUsers.shared
     
 
     func removeUser(at offsets: IndexSet){
-        fetchUsers.fetched?.remove(atOffsets: offsets)
+        AF.request("https://dummyjson.com/users/\(offsets)",
+                   method: .delete)
+        .responseDecodable(of: Users.self){
+            response in
+            if response.value != nil{
+                fetchUsers.fetched?.remove(atOffsets: offsets)
+            }
+        }
+        
     }
     
+    func updateUser(at user: Users){
+        if newLastN != "" || newFirstN != ""{
+            let info: [String: Any] = [
+                "firstName": newFirstN.isEmpty ? user.firstName : newFirstN,
+                "lastName": newLastN.isEmpty ? user.lastName : newLastN
+            ]
+            
+            
+            
+            AF.request("https://dummyjson.com/users/\(user)",
+                       method: .put,
+                       parameters: info)
+            .responseDecodable(of: Users.self) { response in
+                if let results = response.value {
+                    let updatedUser = results
+                    if let index = fetchUsers.fetched?.firstIndex(of: user){
+                        fetchUsers.fetched?[index] = updatedUser
+                    }
+                }
+                newFirstN = ""
+                newLastN = ""
+            }
+        }
+            
+    }
+
     func searchUser(){
         🙋.toggle()
         AF.request("https://dummyjson.com/users/search?q=\(search)")
@@ -30,6 +67,7 @@ struct ContentView: View {
                 response in
                 if let results = response.value{
                     self.found = results.users
+                    
                     
                 }
             }
@@ -100,20 +138,45 @@ struct ContentView: View {
                 if(🙋 == false){
                     if let fetched = fetchUsers.fetched{
                         List{
-                            ForEach(fetched, id: \.id){ user in
-                                Text("\(user.id). \(user.firstName) \(user.lastName)")
+                            ForEach(fetched, id: \.firstName){ user in
+                                HStack{
+                                    Text("\(user.firstName) \(user.lastName)")
+                                    Spacer()
+                                    Button{
+                                        👽.toggle()
+                                    } label: {
+                                        Image(systemName: "pencil")
+                                    }
+                                    .alert("Update", isPresented: $👽){
+                                        TextField("First name", text: $newFirstN)
+                                        TextField("Last name", text: $newLastN)
+                                        Button(action: {
+                                            updateUser(at: user)
+                                            
+                                        }){
+                                            Text("Update")
+                                        }
+                                        Button("Cancel", role: .cancel){}
+                                    } message: {
+                                        Text("Update user")
+                                    }
+                                    }
+                                
+                                
                                 
                             }
                             .onDelete(perform: removeUser)
                             
                         }
+                        .listStyle(PlainListStyle())
+                        
                         
                     }
                 } else {
                     if let found = found{
                         List{
-                            ForEach(found, id: \.id) { found in
-                                Text("\(found.id). \(found.firstName) \(found.lastName)")
+                            ForEach(found, id: \.firstName) { found in
+                                Text("\(found.firstName) \(found.lastName)")
                             }
                         }
                         Button(action: {

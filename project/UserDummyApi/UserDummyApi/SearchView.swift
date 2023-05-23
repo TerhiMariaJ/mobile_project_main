@@ -39,8 +39,8 @@ struct SearchView: View{
             Spacer()
             if let found = found{
                 List{
-                    ForEach(found, id: \.id){ user in
-                        Text("\(user.id). \(user.firstName) \(user.lastName)")
+                    ForEach(found, id: \.firstName){ user in
+                        Text("\(user.firstName) \(user.lastName)")
                         
                     }
                 }
