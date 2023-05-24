@@ -16,45 +16,51 @@ struct ContentView: View {
     @State var newFirstN: String = ""
     @State var newLastN: String = ""
     @State var found: Array<Users>?
+    @State var selected: Int = 0
     @State var 🧑‍🌾: Bool = false
     @State var 🙋: Bool = false
     @State var 👽: Bool = false
+    @State var actionSheetBool: Bool = false
     @ObservedObject var fetchUsers = FetchUsers.shared
     
 
-    func removeUser(at offsets: IndexSet){
-        AF.request("https://dummyjson.com/users/\(offsets)",
+    func removeUser(at index: Int){
+        let userIndex = index + 1
+        AF.request("https://dummyjson.com/users/\(userIndex)",
                    method: .delete)
         .responseDecodable(of: Users.self){
             response in
             if response.value != nil{
-                fetchUsers.fetched?.remove(atOffsets: offsets)
+                fetchUsers.fetched?.remove(at: index)
             }
         }
         
     }
     
-    func updateUser(at user: Users){
+    func updateUser(at index: Int){
+        let userIndex = index + 1
         if newLastN != "" || newFirstN != ""{
+            let user = fetchUsers.fetched?[index]
             let info: [String: Any] = [
-                "firstName": newFirstN.isEmpty ? user.firstName : newFirstN,
-                "lastName": newLastN.isEmpty ? user.lastName : newLastN
+                "firstName": newFirstN.isEmpty ? user!.firstName : newFirstN,
+                "lastName": newLastN.isEmpty ? user!.lastName : newLastN
             ]
             
             
             
-            AF.request("https://dummyjson.com/users/\(user)",
+            AF.request("https://dummyjson.com/users/\(userIndex)",
                        method: .put,
                        parameters: info)
             .responseDecodable(of: Users.self) { response in
                 if let results = response.value {
                     let updatedUser = results
-                    if let index = fetchUsers.fetched?.firstIndex(of: user){
-                        fetchUsers.fetched?[index] = updatedUser
-                    }
+                    fetchUsers.fetched?[index] = updatedUser
+                    
                 }
                 newFirstN = ""
                 newLastN = ""
+                selected = 0
+                fetchUsers.objectWillChange.send()
             }
         }
             
@@ -72,6 +78,8 @@ struct ContentView: View {
                 }
             }
     }
+    
+    
     
     func addUser(){
         if firstN != "" && lastN != "" {
@@ -138,21 +146,38 @@ struct ContentView: View {
                 if(🙋 == false){
                     if let fetched = fetchUsers.fetched{
                         List{
-                            ForEach(fetched, id: \.firstName){ user in
+                            ForEach(fetched.indices, id: \.self){ index in
+                                let user = fetched[index]
                                 HStack{
                                     Text("\(user.firstName) \(user.lastName)")
                                     Spacer()
                                     Button{
-                                        👽.toggle()
+                                        selected = index
+                                        actionSheetBool.toggle()
+                                            
                                     } label: {
-                                        Image(systemName: "pencil")
+                                        Image(systemName: "ellipsis")
+                                    }.actionSheet(isPresented: $actionSheetBool){
+                                        ActionSheet(title: Text("Options"), message: Text("Edit or delete"), buttons: [
+                                                .default(Text("Edit"), action: {
+                                                    👽.toggle()
+                                                }),
+                                                .destructive(Text("Delete"), action: {
+                                                    
+                                                        removeUser(at: selected)
+                                                    
+                                                }),
+                                                .cancel()
+                                            ])
                                     }
                                     .alert("Update", isPresented: $👽){
                                         TextField("First name", text: $newFirstN)
                                         TextField("Last name", text: $newLastN)
                                         Button(action: {
-                                            updateUser(at: user)
                                             
+                                                updateUser(at: selected)
+                                            
+                                                                                
                                         }){
                                             Text("Update")
                                         }
@@ -160,12 +185,17 @@ struct ContentView: View {
                                     } message: {
                                         Text("Update user")
                                     }
-                                    }
+                                    
                                 
                                 
                                 
                             }
-                            .onDelete(perform: removeUser)
+                            
+                            }
+                                                        
+                            
+                            
+                            
                             
                         }
                         .listStyle(PlainListStyle())
@@ -180,7 +210,7 @@ struct ContentView: View {
                             }
                         }
                         Button(action: {
-                            🙋 = false
+                            🙋.toggle()
                             search = ""
                         }) {
                             Text("Clear search")

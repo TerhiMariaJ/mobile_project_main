@@ -12,6 +12,4 @@ struct Users: Decodable, Equatable{
     
 }
 
-struct Results: Decodable{
-    let users: Array<Users>
-}
+
