@@ -13,8 +13,6 @@ struct ContentView: View {
     @State var firstN: String = ""
     @State var lastN: String = ""
     @State var search: String = ""
-    @State var newFirstN: String = ""
-    @State var newLastN: String = ""
     @State var found: Array<Users>?
     @State var selected: Int = 0
     @State var 🧑‍🌾: Bool = false
@@ -39,11 +37,11 @@ struct ContentView: View {
     
     func updateUser(at index: Int){
         let userIndex = index + 1
-        if newLastN != "" || newFirstN != ""{
+        if lastN != "" || firstN != ""{
             let user = fetchUsers.fetched?[index]
             let info: [String: Any] = [
-                "firstName": newFirstN.isEmpty ? user!.firstName : newFirstN,
-                "lastName": newLastN.isEmpty ? user!.lastName : newLastN
+                "firstName": firstN.isEmpty ? user!.firstName : firstN,
+                "lastName": lastN.isEmpty ? user!.lastName : lastN
             ]
             
             
@@ -57,8 +55,8 @@ struct ContentView: View {
                     fetchUsers.fetched?[index] = updatedUser
                     
                 }
-                newFirstN = ""
-                newLastN = ""
+                firstN = ""
+                lastN = ""
                 selected = 0
                 fetchUsers.objectWillChange.send()
             }
@@ -114,14 +112,20 @@ struct ContentView: View {
         
             VStack {
                 HStack{
+                    Spacer()
                     Text("Users")
+                    .font(.custom("Copperplate", size: 30))
+                    .fontWeight(.semibold)
                     Spacer()
                     Button{
                         🧑‍🌾.toggle()
                         
                     }label: {
                         Image(systemName: "plus")
-                    }
+                    }.padding()
+                    .foregroundColor(Color.white)
+                    .background(Color.blue)
+                    .cornerRadius(30)
                     .alert("New user", isPresented: $🧑‍🌾){
                         TextField("First name", text: $firstN)
                         TextField("Last name", text: $lastN)
@@ -141,6 +145,10 @@ struct ContentView: View {
                     }) {
                         Image(systemName: "magnifyingglass")
                     }
+                    .padding()
+                    .foregroundColor(Color.white)
+                    .background(Color.blue)
+                    
                 }
                 .padding()
                 if(🙋 == false){
@@ -171,8 +179,8 @@ struct ContentView: View {
                                             ])
                                     }
                                     .alert("Update", isPresented: $👽){
-                                        TextField("First name", text: $newFirstN)
-                                        TextField("Last name", text: $newLastN)
+                                        TextField("First name", text: $firstN)
+                                        TextField("Last name", text: $lastN)
                                         Button(action: {
                                             
                                                 updateUser(at: selected)
@@ -214,8 +222,12 @@ struct ContentView: View {
                             search = ""
                         }) {
                             Text("Clear search")
+                                
                         }
                         .padding()
+                        .foregroundColor(Color.white)
+                        .background(Color.blue)
+                        .cornerRadius(30)
                         
                     }
                 }
