@@ -10,7 +10,7 @@ import Alamofire
 
 /**
  ContentView
- ### States and ObservedObject
+ ###States and ObservedObject
  Used for user handling user's actions.
  ###Strings
  State strings are used for users written
@@ -32,9 +32,7 @@ import Alamofire
  all users can be accessed.
  */
 struct ContentView: View {
-    
-    
-        
+ 
     @State var firstN: String = ""
     @State var lastN: String = ""
     @State var search: String = ""
@@ -49,7 +47,7 @@ struct ContentView: View {
     /**
      removeUser:
      Function for removing a user.
-     - Parameter index: - works as an id in UI.
+     - Parameter index: - works as an id.
         Changed in the function so it works as wished.
      */
     func removeUser(at index: Int){
@@ -68,7 +66,7 @@ struct ContentView: View {
     /**
      updateUser:
      Updates the info of the chosen user.
-     - Parameter index: - works as an id in UI.
+     - Parameter index: - works as an id.
      Changed in the function so it works as wished.
      */
     func updateUser(at index: Int){
@@ -79,7 +77,6 @@ struct ContentView: View {
                 "firstName": firstN.isEmpty ? user!.firstName : firstN,
                 "lastName": lastN.isEmpty ? user!.lastName : lastN
             ]
-            
             AF.request("https://dummyjson.com/users/\(userIndex)",
                        method: .put,
                        parameters: info)
@@ -190,7 +187,7 @@ struct ContentView: View {
                     .padding()
                     .foregroundColor(Color.white)
                     .background(Color.blue)
-                    
+                    .cornerRadius(10)
                 }
                 .padding()
                 if(🙋 == false){
@@ -268,10 +265,7 @@ struct ContentView: View {
             .padding()
             .onAppear(){
                 fetchUsers.fetchAllUsers()
-                
             }
-           
-        
     }
 }
 
