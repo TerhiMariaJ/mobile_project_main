@@ -8,7 +8,32 @@
 import SwiftUI
 import Alamofire
 
+/**
+ ContentView
+ ### States and ObservedObject
+ Used for user handling user's actions.
+ ###Strings
+ State strings are used for users written
+ input.
+ ###Array
+ Used for search results.
+ ###Int
+ Used instead of id so adding can be done
+ multiple times. Needed for deleting and
+ updating a certain user.
+ ###Bools
+ All needed for showing something after a
+ certain action is performed. Two of them
+ for separate alerts, one of them for
+ search results and one of them for
+ actionsheet.
+ ###ObservedObject
+ It is used for the FetchUsers so
+ all users can be accessed.
+ */
 struct ContentView: View {
+    
+    
         
     @State var firstN: String = ""
     @State var lastN: String = ""
@@ -21,7 +46,12 @@ struct ContentView: View {
     @State var actionSheetBool: Bool = false
     @ObservedObject var fetchUsers = FetchUsers.shared
     
-
+    /**
+     removeUser:
+     Function for removing a user.
+     - Parameter index: - works as an id in UI.
+        Changed in the function so it works as wished.
+     */
     func removeUser(at index: Int){
         let userIndex = index + 1
         AF.request("https://dummyjson.com/users/\(userIndex)",
@@ -35,6 +65,12 @@ struct ContentView: View {
         
     }
     
+    /**
+     updateUser:
+     Updates the info of the chosen user.
+     - Parameter index: - works as an id in UI.
+     Changed in the function so it works as wished.
+     */
     func updateUser(at index: Int){
         let userIndex = index + 1
         if lastN != "" || firstN != ""{
@@ -43,8 +79,6 @@ struct ContentView: View {
                 "firstName": firstN.isEmpty ? user!.firstName : firstN,
                 "lastName": lastN.isEmpty ? user!.lastName : lastN
             ]
-            
-            
             
             AF.request("https://dummyjson.com/users/\(userIndex)",
                        method: .put,
@@ -64,6 +98,12 @@ struct ContentView: View {
             
     }
 
+    /**
+     searchUser:
+     Searches the wanted user(s)
+     and toggles the bool for showing
+     the found users in said search
+     */
     func searchUser(){
         🙋.toggle()
         AF.request("https://dummyjson.com/users/search?q=\(search)")
@@ -71,14 +111,16 @@ struct ContentView: View {
                 response in
                 if let results = response.value{
                     self.found = results.users
-                    
-                    
+
                 }
             }
     }
     
     
-    
+     /**
+      addUser:
+      Adds a new user with given input.
+      */
     func addUser(){
         if firstN != "" && lastN != "" {
             let info: [String: Any] = [
@@ -93,14 +135,9 @@ struct ContentView: View {
                 response in
                 if let results = response.value{
                     let newUser = results
-                    
                     fetchUsers.fetched?.append(newUser)
-                        
-                    
-                    
                     firstN = ""
                     lastN = ""
-                                        
                     
                 }
                 
@@ -108,6 +145,11 @@ struct ContentView: View {
         }
     }
     
+    /**
+     View:
+     the UI for the app.
+     Calls all the above functions when needed.
+     */
     var body: some View {
         
             VStack {
@@ -182,10 +224,7 @@ struct ContentView: View {
                                         TextField("First name", text: $firstN)
                                         TextField("Last name", text: $lastN)
                                         Button(action: {
-                                            
                                                 updateUser(at: selected)
-                                            
-                                                                                
                                         }){
                                             Text("Update")
                                         }
@@ -193,21 +232,14 @@ struct ContentView: View {
                                     } message: {
                                         Text("Update user")
                                     }
-                                    
-                                
-                                
                                 
                             }
                             
                             }
                                                         
                             
-                            
-                            
-                            
                         }
                         .listStyle(PlainListStyle())
-                        
                         
                     }
                 } else {
@@ -234,7 +266,6 @@ struct ContentView: View {
                 
             }
             .padding()
-            
             .onAppear(){
                 fetchUsers.fetchAllUsers()
                 

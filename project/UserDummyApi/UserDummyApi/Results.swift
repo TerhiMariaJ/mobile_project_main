@@ -7,7 +7,10 @@
 
 import Foundation
 
-
+/**
+ ### Results
+ -Parameter users: Takes users and makes them an array.
+ */
 struct Results: Decodable{
     let users: Array<Users>
 }

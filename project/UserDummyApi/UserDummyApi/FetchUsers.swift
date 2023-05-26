@@ -10,7 +10,16 @@ import Foundation
 import SwiftUI
 import Alamofire
 
+/**
+ ### Fetchusers
+ The class for fetching all users. In different class because of
+ older UI.
+ -Parameters:
+ -fetchAllUsers:Returns the data from backend with Alamofire.
+ -shared: Shares the function to other structs/classes.
+ */
 class FetchUsers: ObservableObject{
+    
     @Published var fetched: Array<Users>? = nil
     static let shared = FetchUsers()
     
