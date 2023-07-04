@@ -6,5 +6,3 @@ May 2023
 - Used HTTP-client: Alamofire, does the JSON parsing in the process.
 - Used UI: SwiftUI.
 
-- Link to the screencastvideo:
-https://youtu.be/Wv0aVe35f9o
